@@ -11,7 +11,7 @@ func main() {
 
 	// fmt.Println(age)
 
-	const (
+	const (               --if we are printing list of const we can use const like this
 		port = 5000
 		host = "localhost"
 	)
