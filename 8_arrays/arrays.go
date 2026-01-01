@@ -4,11 +4,11 @@ package main
 func main() {
 	// zeroed values
 	// int -> 0, string -> "", bool -> false
-	// var nums [4]int
+	// var nums [4]int   --declare an array 
 
 	// nums[0] = 1
 	// fmt.Println(nums[0])
-	// fmt.Println(nums)
+	// fmt.Println(nums)    --print complete array
 	// array length
 	// fmt.Println(len(nums))
 
