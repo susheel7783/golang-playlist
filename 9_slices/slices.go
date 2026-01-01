@@ -1,15 +1,15 @@
 package main
 
-// slice -> dynamic
-// most used construct in go
+// slice -> dynamic array (expand the size)
+//this is most used construct in go
 // + useful methods
 func main() {
-	// uninitialized slice is nil
+	// uninitialized slice is nil   --in go we write nil  instead of null
 	// var nums []int
 	// fmt.Println(nums == nil)
 	// fmt.Println(len(nums))
 
-	// var nums = make([]int, 0, 5)
+	// var nums = make([]int, 0, 5)   --if we don't want nil we can initialize like this
 	// capacity -> maximum numbers of elements can fit
 	// fmt.Println(cap(nums))
 	// fmt.Println(nums == nil)
