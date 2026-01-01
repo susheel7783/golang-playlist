@@ -5,7 +5,7 @@ func main() {
 	// i := 3
 	// switch i {
 	// case 1:
-	// 	fmt.Println("one")    --in go no need to write break here go automatically break it
+	// 	fmt.Println("one")    --in go no need to write break here, go automatically break it
 	// case 2:
 	// 	fmt.Println("two")
 	// case 3:
@@ -37,6 +37,22 @@ func main() {
 	// 	}
 	// }
 
-	// whoAmI(55)
+	// whoAmI(55)   --calling the function
+	
+	//------2nd case-------------
+	// whoAmI := func(i interface{}) {
+	// 	switch t=i.(type) {
+	// 	case int:
+	// 		fmt.Println("its an integer")
+	// 	case string:
+	// 		fmt.Println("its a string")
+	// 	case bool:
+	// 		fmt.Println("its a boolean")
+	// 	default:
+	// 		fmt.Println("other",t)
+	// 	}
+	// }
+
+	// whoAmI(55)   --calling the function
 
 }
