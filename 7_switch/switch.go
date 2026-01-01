@@ -5,7 +5,7 @@ func main() {
 	// i := 3
 	// switch i {
 	// case 1:
-	// 	fmt.Println("one")
+	// 	fmt.Println("one")    --in go no need to write break here go automatically break it
 	// case 2:
 	// 	fmt.Println("two")
 	// case 3:
