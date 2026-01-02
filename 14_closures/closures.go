@@ -15,6 +15,6 @@ func counter() func() int {   --here counter function not receiving any paramete
 func main() {
 	increment := counter()    -- to call increment function we have to call counter function and this will return the increment function
 
-	fmt.Println(increment())
-	fmt.Println(increment())
+	fmt.Println(increment())  --op 1
+	fmt.Println(increment())  --op 2  
 }
