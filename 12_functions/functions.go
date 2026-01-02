@@ -1,6 +1,10 @@
 package main
 
-// func add(a, b int) int {
+// func add(a int, b int) int {
+// 	return a + b
+// }
+
+// func add(a, b int) int {   --if both are int then we can write like this
 // 	return a + b
 // }
 
@@ -25,8 +29,9 @@ func main() {
 
 	fn := processIt()
 	fn(6)
-
-	// lang1, lang2, _ := getLanguages()
+   // fmt.Printlm(getLanguages()) 
+	//let's first get and then print(below code)
+	// lang1, lang2, _ := getLanguages()    --if we don't want to use lang3 then we are putting underscore(_)
 	// fmt.Println(lang1, lang2)
 	// result := add(3, 5)
 	// fmt.Println(result)
