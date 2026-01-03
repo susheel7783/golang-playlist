@@ -61,7 +61,7 @@ func main() {
 	newOrder.customer.name = "robin"
 	fmt.Println(newOrder)
 
-	// language := struct {
+	// language := struct {    --we can create struct here and assign value 
 	// 	name   string
 	// 	isGood bool
 	// }{"golang", true}
