@@ -21,6 +21,8 @@ type order struct {
 	customer
 }
 
+ // there is no constructor in go ,we create function here 
+
 // func newOrder(id string, amount float32, status string) *order {
 // 	// initial setup goes here...
 // 	myOrder := order{
