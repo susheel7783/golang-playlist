@@ -61,8 +61,8 @@ func main() {
 	newOrder.customer.name = "robin"
 	fmt.Println(newOrder)
 
-	// language := struct {    --we can create struct here and assign value 
-	// 	name   string
+	// language := struct {    --we can create struct here and assign value , if we have to use struct only once then we can cretae struct like this, inline struct
+	// 	name   string        
 	// 	isGood bool
 	// }{"golang", true}
 
