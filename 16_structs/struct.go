@@ -18,7 +18,7 @@ type order struct {
 	amount    float32
 	status    string
 	createdAt time.Time // nanosecond precision
-	customer
+	customer   --this is embedding by calling customer here cutmer information will come here
 }
 
  // there is no constructor in go ,we create function here 
