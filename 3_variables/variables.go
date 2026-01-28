@@ -43,10 +43,10 @@ func main() {
 	// Here you MUST write the type
 	// -----------------------------------
 	var company string
-	company = "Tilda"
+	company = "Google"
 
 	var salary int
-	salary = 50000
+	salary = 150000
 
 	fmt.Println(company, salary)
 }
