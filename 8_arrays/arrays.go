@@ -47,8 +47,7 @@ func main() {
 	fmt.Println("2D array:", matrix)
 
 }
-------------
-ey concepts you wrote (corrected and refined)
+------------concepts --------------
 
 ✅ Fixed size → length cannot change
 
