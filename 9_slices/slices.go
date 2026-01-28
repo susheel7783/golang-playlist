@@ -1,57 +1,101 @@
 package main
 
-// slice -> dynamic array (expand the size)
-//this is most used construct in go
-// + useful methods
+import (
+	"fmt"
+	"slices" // Go 1.21+
+)
+
+// slice -> dynamic array (can grow and shrink)
+// this is the most used data structure in Go
+
 func main() {
-	// uninitialized slice is nil   --in go we write nil  instead of null
-	// var nums []int
-	// fmt.Println(nums == nil)
-	// fmt.Println(len(nums))
 
-	// var nums = make([]int, 0, 5)   --if we don't want nil we can initialize like this
-	// capacity -> maximum numbers of elements can fit and it will resize itself
-	// fmt.Println(cap(nums)) --cap function gives the capacity
-	// fmt.Println(nums == nil)
+	// -----------------------------------
+	// 1. Uninitialized slice (nil slice)
+	// -----------------------------------
+	var nums []int
 
-	// nums := []int{}   --we can create slice like this as well
+	fmt.Println(nums == nil) // true (nil slice)
+	fmt.Println("len:", len(nums))
+	fmt.Println("cap:", cap(nums))
 
-	// nums = append(nums, 1)  -- we can use append method
-	// nums = append(nums, 2)
+	// -----------------------------------
+	// 2. make() - initialize slice (not nil)
+	// make(type, length, capacity)
+	// -----------------------------------
+	nums = make([]int, 0, 5)
 
-	
-    // var nums = make([]int, 2, 5)   --here 2 element 5 capacity we initilaise 
-	// nums[0] = 3
-	// nums[1] = 5
-	// fmt.Println(nums)   --op [3,5]
-	// fmt.Println(cap(nums)) --op 5
-	// fmt.Println(len(nums)) --op 2
-	
+	fmt.Println("\nAfter make:")
+	fmt.Println(nums == nil) // false
+	fmt.Println("len:", len(nums))
+	fmt.Println("cap:", cap(nums))
 
-	// var nums = make([]int, 0, 5)
-	// nums = append(nums, 2)
-	// var nums2 = make([]int, len(nums))
-    // fmt.Println(nums, nums2)   --op [2] []
+	// -----------------------------------
+	// 3. append() - add elements
+	// -----------------------------------
+	nums = append(nums, 1)
+	nums = append(nums, 2, 3)
 
-	
-	// // copy function
-	// copy(nums2, nums)
-	// fmt.Println(nums, nums2)  --op [2] [2]
+	fmt.Println("\nAfter append:", nums)
+	fmt.Println("len:", len(nums))
+	fmt.Println("cap:", cap(nums))
 
-	// slice operator
+	// -----------------------------------
+	// 4. make with length and capacity
+	// -----------------------------------
+	nums2 := make([]int, 2, 5)
+	nums2[0] = 3
+	nums2[1] = 5
 
-	// var nums = []int{1, 2, 3, 4, 5}
-	// fmt.Println(nums[0:1])   --op [1]
-	// fmt.Println(nums[:2])    --op [1,2]
-	// fmt.Println(nums[1:])    --op [2,3,4,5]
+	fmt.Println("\nnums2:", nums2)
+	fmt.Println("len:", len(nums2))
+	fmt.Println("cap:", cap(nums2))
 
-	// slices
-	// var nums1 = []int{1, 2, 3}
-	// var nums2 = []int{1, 2, 4}
+	// -----------------------------------
+	// 5. copy() - copy one slice to another
+	// -----------------------------------
+	nums3 := make([]int, len(nums))
+	copy(nums3, nums)
 
-	// fmt.Println(slices.Equal(nums1, nums2))  --op false
+	fmt.Println("\nAfter copy:")
+	fmt.Println("nums :", nums)
+	fmt.Println("nums3:", nums3)
 
-	// var nums = [][]int{{1, 2, 3}, {4, 5, 6}}
-	// fmt.Println(nums)
+	// -----------------------------------
+	// 6. Slice operator
+	// -----------------------------------
+	arr := []int{1, 2, 3, 4, 5}
 
+	fmt.Println("\nSlicing examples:")
+	fmt.Println(arr[0:1]) // [1]
+	fmt.Println(arr[:2])  // [1 2]
+	fmt.Println(arr[1:])  // [2 3 4 5]
+
+	// -----------------------------------
+	// 7. Compare slices (Go 1.21+)
+	// -----------------------------------
+	a := []int{1, 2, 3}
+	b := []int{1, 2, 4}
+
+	fmt.Println("\nSlices equal:", slices.Equal(a, b)) // false
+
+	// -----------------------------------
+	// 8. 2D slice
+	// -----------------------------------
+	matrix := [][]int{{1, 2, 3}, {4, 5, 6}}
+	fmt.Println("\n2D slice:", matrix)
 }
+---------------
+Slice is a dynamic view over an array
+
+nil slice ≠ empty slice
+
+len() → number of elements
+
+cap() → how many elements it can grow without reallocating
+
+append() → automatically grows capacity
+
+copy() → copies values, not reference
+
+slices.Equal() → safe slice comparison
