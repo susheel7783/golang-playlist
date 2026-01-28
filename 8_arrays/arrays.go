@@ -1,35 +1,59 @@
 package main
 
-// numbered sequence of specific length
+import "fmt"
+
+// Array = numbered sequence of elements of a fixed length
+
 func main() {
-	// zeroed values
+
+	// -----------------------------------
+	// 1. Zero-value array
 	// int -> 0, string -> "", bool -> false
-	// var nums [4]int   --declare an array 
+	// -----------------------------------
+	var nums [4]int // declare an array of length 4
 
-	// nums[0] = 1
-	// fmt.Println(nums[0])
-	// fmt.Println(nums)    --print complete array
-	// array length
-	// fmt.Println(len(nums))
+	fmt.Println(nums)        // [0 0 0 0]
+	fmt.Println("Length:", len(nums))
 
-	// var vals [4]bool
-	// vals[2] = true
-	// fmt.Println(vals)
+	// assign value
+	nums[0] = 1
+	fmt.Println("First value:", nums[0])
+	fmt.Println("Full array:", nums)
 
-	// var name [3]string
-	// name[0] = "golang"
-	// fmt.Println(name)
+	// -----------------------------------
+	// 2. Boolean array
+	// -----------------------------------
+	var vals [4]bool
+	vals[2] = true
+	fmt.Println("Bool array:", vals)
 
-	// to declare it in single line
-	// nums := [3]int{1, 2, 3}
-	// fmt.Println(nums)
+	// -----------------------------------
+	// 3. String array
+	// -----------------------------------
+	var names [3]string
+	names[0] = "golang"
+	fmt.Println("String array:", names)
 
-	// 2d arrays
-	// nums := [2][2]int{{3, 4}, {5, 6}}
-	// fmt.Println(nums)
+	// -----------------------------------
+	// 4. Declare and initialize in one line
+	// -----------------------------------
+	numbers := [3]int{1, 2, 3}
+	fmt.Println("One line array:", numbers)
 
-	// - fixed size, that is predictable
-	// - Memory optimazation
-	// - Contant time access
+	// -----------------------------------
+	// 5. 2D array (matrix)
+	// -----------------------------------
+	matrix := [2][2]int{{3, 4}, {5, 6}}
+	fmt.Println("2D array:", matrix)
 
 }
+------------
+ey concepts you wrote (corrected and refined)
+
+✅ Fixed size → length cannot change
+
+✅ Predictable memory layout
+
+✅ Constant time access (O(1)) using index
+
+✅ Zero values by default
