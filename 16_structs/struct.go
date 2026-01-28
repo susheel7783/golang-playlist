@@ -5,92 +5,163 @@ import (
 	"time"
 )
 
-// order struct
-
+// -----------------------------------
+// Customer struct
+// -----------------------------------
 type customer struct {
 	name  string
 	phone string
 }
 
-// composition
+// -----------------------------------
+// Order struct (with embedding)
+// customer is EMBEDDED here
+// so order automatically has name and phone via customer
+// -----------------------------------
 type order struct {
 	id        string
 	amount    float32
 	status    string
 	createdAt time.Time // nanosecond precision
-	customer   --this is embedding by calling customer here cutmer information will come here
+	customer  // embedded struct (composition)
 }
 
- // there is no constructor in go ,we create function here 
+// -----------------------------------
+// There is no constructor in Go,
+// but we usually create a "constructor-like" function
+// -----------------------------------
+func newOrder(id string, amount float32, status string, cust customer) *order {
 
-// func newOrder(id string, amount float32, status string) *order {
-// 	// initial setup goes here...
-// 	myOrder := order{
-// 		id:     id,
-// 		amount: amount,
-// 		status: status,
-// 	}
-
-// 	return &myOrder
-// }
-
-// // receiver type
-// func (o *order) changeStatus(status string) {
-// 	o.status = status
-// }
-
-// func (o order) getAmount() float32 {
-// 	return o.amount
-// }
-
-func main() {
-	// newCustomer := customer{
-	// 	name:  "john",
-	// 	phone: "1234567890",
-	// }
-	newOrder := order{
-		id:     "1",
-		amount: 30,
-		status: "received",
-		customer: customer{
-			name:  "john",
-			phone: "1234567890",
-		},
+	myOrder := order{
+		id:        id,
+		amount:    amount,
+		status:    status,
+		createdAt: time.Now(),
+		customer:  cust,
 	}
 
-	newOrder.customer.name = "robin"
-	fmt.Println(newOrder)
-
-	// language := struct {    --we can create struct here and assign value , if we have to use struct only once then we can cretae struct like this, inline struct
-	// 	name   string        
-	// 	isGood bool
-	// }{"golang", true}
-
-	// fmt.Println(language)
-
-	// myOrder := newOrder("1", 30.50, "received")
-	// fmt.Println(myOrder.amount)
-	// if you don't set any field, default value is zero value
-	// int => 0, float => 0, string "", bool => false
-	// myOrder := order{
-	// 	id:     "1",
-	// 	amount: 50.00,
-	// 	status: "received",
-	// }
-	// myOrder.changeStatus("confirmed")
-	// fmt.Println(myOrder)
-	// myOrder.createdAt = time.Now()
-	// fmt.Println(myOrder.status)
-
-	// myOrder2 := order{
-	// 	id:        "2",
-	// 	amount:    100,
-	// 	status:    "delivered",
-	// 	createdAt: time.Now(),
-	// }
-
-	// myOrder.status = "paid"
-
-	// fmt.Println("Order struct", myOrder2)
-	// fmt.Println("Order struct", myOrder)
+	return &myOrder
 }
+
+// -----------------------------------
+// Method with pointer receiver
+// Can modify original struct
+// -----------------------------------
+func (o *order) changeStatus(status string) {
+	o.status = status
+}
+
+// -----------------------------------
+// Method with value receiver
+// Only reads data (does not modify original)
+// -----------------------------------
+func (o order) getAmount() float32 {
+	return o.amount
+}
+
+func main() {
+
+	// -----------------------------------
+	// Create customer
+	// -----------------------------------
+	cust := customer{
+		name:  "john",
+		phone: "1234567890",
+	}
+
+	// -----------------------------------
+	// Create order using constructor-style function
+	// -----------------------------------
+	myOrder := newOrder("1", 30.5, "received", cust)
+
+	fmt.Println("Initial order:", myOrder)
+
+	// -----------------------------------
+	// Access embedded struct fields
+	// -----------------------------------
+	fmt.Println("Customer name:", myOrder.name)       // direct access
+	fmt.Println("Customer phone:", myOrder.phone)     // direct access
+	fmt.Println("Customer name:", myOrder.customer.name) // also valid
+
+	// -----------------------------------
+	// Update embedded struct field
+	// -----------------------------------
+	myOrder.customer.name = "robin"
+
+	// -----------------------------------
+	// Call methods
+	// -----------------------------------
+	myOrder.changeStatus("confirmed")
+	fmt.Println("Updated order:", myOrder)
+	fmt.Println("Order amount:", myOrder.getAmount())
+
+	// -----------------------------------
+	// Inline struct (used once)
+	// -----------------------------------
+	language := struct {
+		name   string
+		isGood bool
+	}{
+		"golang",
+		true,
+	}
+
+	fmt.Println("Inline struct:", language)
+}
+-----------------------------------
+
+
+
+✅ Struct
+
+Custom data type (like class without inheritance)
+
+type order struct { ... }
+
+✅ Embedding (Composition)
+type order struct {
+	customer
+}
+
+
+Now you can access:
+
+myOrder.name
+myOrder.phone
+
+
+This is how Go achieves composition instead of inheritance.
+
+✅ Constructor-style function
+func newOrder(...) *order
+
+
+Used to:
+
+initialize defaults
+
+validate data
+
+return pointer
+
+✅ Methods
+func (o *order) changeStatus(status string)
+
+
+*order → can modify original
+
+order → read-only copy
+
+✅ Zero values
+
+If not set:
+
+int → 0
+
+float → 0
+
+string → ""
+
+bool → false
+
+time.Time → 0001-01-01...
