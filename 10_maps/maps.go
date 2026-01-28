@@ -1,43 +1,83 @@
 package main
 
-// maps -> hash, object, dict
+import (
+	"fmt"
+	"maps" // Go 1.21+
+)
+
+// maps -> hash table (like dict in Python, object in JS)
+
 func main() {
-	// creating map
 
-	// m := make(map[string]string)  --key- string, value- string 
+	// -----------------------------------
+	// 1. Creating a map using make()
+	// key: string, value: string
+	// -----------------------------------
+	m := make(map[string]string)
 
-	// setting an element
-	// m["name"] = "golang"
-	// m["area"] = "backend"
+	// setting elements
+	m["name"] = "golang"
+	m["area"] = "backend"
 
-	// get an element
-	// fmt.Println(m["name"], m["area"])
-	// IMP: if key does not exists in the map then it returns zero value
+	// getting elements
+	fmt.Println("name:", m["name"])
+	fmt.Println("area:", m["area"])
 
-	// m := make(map[string]int) --key- string, value- int
-	// m["age"] = 30
-	// m["price"] = 50
-	// fmt.Println(m["phone"])
-	// fmt.Println(len(m))
+	// if key does NOT exist, zero value is returned
+	fmt.Println("unknown:", m["unknown"]) // ""
 
-	// delete(m, "price")
-	// clear(m)  -- we can empty the map
+	// -----------------------------------
+	// 2. Map with int values
+	// -----------------------------------
+	m2 := make(map[string]int)
+	m2["age"] = 30
+	m2["price"] = 50
 
-	// fmt.Println(m)
-	// fmt.Println(m)
+	fmt.Println("\nm2:", m2)
+	fmt.Println("len:", len(m2))
 
-	// m := map[string]int{"price": 40, "phones": 3}  -- we can make map without using make fun
+	// -----------------------------------
+	// 3. delete() and clear()
+	// -----------------------------------
+	delete(m2, "price") // removes one key
+	fmt.Println("after delete:", m2)
 
-	// v, ok := m["phones"]    --first var give value and 2nd give true or  false
-	// fmt.Println(v)
-	// if ok {
-	// 	fmt.Println("all ok")
-	// } else {
-	// 	fmt.Println("not ok")
-	// }
+	clear(m2) // removes all keys
+	fmt.Println("after clear:", m2)
 
-	// m1 := map[string]int{"price": 40, "phones": 3}
-	// m2 := map[string]int{"price": 40, "phones": 8}
-	// fmt.Println(maps.Equal(m1, m2))
+	// -----------------------------------
+	// 4. Creating map without make()
+	// -----------------------------------
+	m3 := map[string]int{"price": 40, "phones": 3}
+	fmt.Println("\nm3:", m3)
 
+	// -----------------------------------
+	// 5. Check if key exists
+	// -----------------------------------
+	v, ok := m3["phones"] // v = value, ok = true/false
+	if ok {
+		fmt.Println("phones exists, value =", v)
+	} else {
+		fmt.Println("phones key not found")
+	}
+
+	// -----------------------------------
+	// 6. Compare two maps (Go 1.21+)
+	// -----------------------------------
+	m4 := map[string]int{"price": 40, "phones": 3}
+	m5 := map[string]int{"price": 40, "phones": 8}
+
+	fmt.Println("\nmaps equal:", maps.Equal(m4, m5)) // false
 }
+-------------------------
+Maps are reference types
+
+Accessing missing key → returns zero value
+
+Use value, ok := m[key] to check existence
+
+delete(m, key) → removes one entry
+
+clear(m) → empties entire map
+
+maps.Equal() → compares maps safely
