@@ -42,10 +42,7 @@ func main() {
 	fmt.Println("Memory address of num:", &num)
 }
 
-
-
-
--------------
+--------------------------
 Key pointer concepts (interview-ready)
 
 &num → gives address of variable
