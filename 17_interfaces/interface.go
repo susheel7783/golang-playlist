@@ -79,4 +79,5 @@ func main() {
 	newPayment.makeRefund(50, "test@upi")
 }
 ---------------------------------------------
- interface An interface in Go defines behavior. We use it to achieve abstraction, loose coupling, easy testing, and to follow the Open/Closed principle
+ ## interface 
+An interface in Go defines behavior. We use it to achieve abstraction, loose coupling, easy testing, and to follow the Open/Closed principle
