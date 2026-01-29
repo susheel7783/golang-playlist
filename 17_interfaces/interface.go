@@ -15,7 +15,7 @@ type paymenter interface {
 }
 
 /*
-This struct depends on the interface, not a real payment gateway.
+This struct depends on the interface, not a real payment gateway. 
 
 WHY WE USE INTERFACE HERE:
 - To avoid tight coupling
@@ -79,4 +79,4 @@ func main() {
 	newPayment.makeRefund(50, "test@upi")
 }
 ---------------------------------------------
-An interface in Go defines behavior. We use it to achieve abstraction, loose coupling, easy testing, and to follow the Open/Closed principle
+ interface An interface in Go defines behavior. We use it to achieve abstraction, loose coupling, easy testing, and to follow the Open/Closed principle
