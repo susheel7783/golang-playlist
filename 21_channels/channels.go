@@ -5,31 +5,29 @@ import (
 	"time"
 )
 
-// send
-// func processNum(numChan chan int) {
-// 	for num := range numChan {
-// 		fmt.Println("processing number", num)
-// 		time.Sleep(time.Second)
-// 	}
+/*
+--------------------------------------------------
+CHANNEL CONCEPTS USED IN THIS FILE
+--------------------------------------------------
+1. Sending data to a channel
+2. Receiving data from a channel
+3. Direction-only channels
+4. select statement
+5. Buffered channels
+6. close(channel)
+7. Goroutine synchronization using channels
+--------------------------------------------------
+*/
 
-// }
-
-// receive
-// func sum(result chan int, num1 int, num2 int) {
-// 	numResult := num1 + num2
-// 	result <- numResult
-// }
-
-// goroutine synchronizer
-// func task(done chan bool) {
-// 	defer func() { done <- true }()
-
-// 	fmt.Println("processing...")
-// }
-
+// emailSender demonstrates:
+// - receive-only channel for emails
+// - send-only channel for signaling completion
 func emailSender(emailChan <-chan string, done chan<- bool) {
+
+	// Ensure done signal is sent when function exits
 	defer func() { done <- true }()
 
+	// range keeps receiving values until channel is closed
 	for email := range emailChan {
 		fmt.Println("sending email to", email)
 		time.Sleep(time.Second)
@@ -37,70 +35,130 @@ func emailSender(emailChan <-chan string, done chan<- bool) {
 }
 
 func main() {
+
+	// ---------------------------------------------
+	// MULTIPLE CHANNELS + SELECT
+	// ---------------------------------------------
+
+	// Create unbuffered channels
 	chan1 := make(chan int)
 	chan2 := make(chan string)
 
+	// Send value to chan1 using goroutine
 	go func() {
 		chan1 <- 10
 	}()
 
+	// Send value to chan2 using goroutine
 	go func() {
 		chan2 <- "pong"
 	}()
 
+	// select waits for ANY channel to be ready
+	// It executes whichever case is available first
 	for i := 0; i < 2; i++ {
 		select {
+
 		case chan1Val := <-chan1:
 			fmt.Println("received data from chan1", chan1Val)
+
 		case chan2Val := <-chan2:
 			fmt.Println("received data from chan2", chan2Val)
 		}
 	}
 
-	// emailChan := make(chan string, 100)
-	// done := make(chan bool)
+	// ---------------------------------------------
+	// EMAIL WORKER EXAMPLE (BUFFERED CHANNEL)
+	// ---------------------------------------------
 
-	// go emailSender(emailChan, done)
+	/*
+	emailChan := make(chan string, 100) // buffered channel
+	done := make(chan bool)             // synchronization channel
 
-	// for i := 0; i < 5; i++ {
-	// 	emailChan <- fmt.Sprintf("%d@gmail.com", i)
-	// }
+	// Start email sender goroutine
+	go emailSender(emailChan, done)
 
-	// fmt.Println("done sending.")
+	// Send emails
+	for i := 0; i < 5; i++ {
+		emailChan <- fmt.Sprintf("%d@gmail.com", i)
+	}
 
-	// this is important
-	// close(emailChan)
-	// <-done
-	// emailChan <- "1@example.com"
-	// emailChan <- "2@example.com"
+	fmt.Println("done sending emails")
 
-	// fmt.Println(<-emailChan)
-	// fmt.Println(<-emailChan)
+	// VERY IMPORTANT:
+	// close tells receiver that no more data will come
+	close(emailChan)
 
-	// done := make(chan bool)
-	// go task(done)
+	// Block main until emailSender finishes
+	<-done
+	*/
 
-	// <-done // block
+	// ---------------------------------------------
+	// SIGNAL CHANNEL (GOROUTINE SYNCHRONIZATION)
+	// ---------------------------------------------
 
-	// result := make(chan int)
-	// go sum(result, 4, 5)
-	// res := <-result // blocking
+	/*
+	done := make(chan bool)
 
-	// fmt.Println(res)
-	// numChan := make(chan int)
+	go func() {
+		fmt.Println("processing...")
+		done <- true
+	}()
 
-	// go processNum(numChan)
+	<-done // blocks main until goroutine finishes
+	*/
 
-	// for {
-	// 	numChan <- rand.Intn(100)
-	// }
+	// ---------------------------------------------
+	// CHANNEL USED FOR RETURNING VALUES
+	// ---------------------------------------------
 
-	// messageChan := make(chan string)
+	/*
+	result := make(chan int)
 
-	// messageChan <- "ping" // blocking
+	go func() {
+		result <- 4 + 5
+	}()
 
-	// msg := <-messageChan
+	res := <-result // blocks until value received
+	fmt.Println(res)
+	*/
 
-	// fmt.Println(msg)
+	// ---------------------------------------------
+	// BLOCKING BEHAVIOR DEMO
+	// ---------------------------------------------
 
+	/*
+	messageChan := make(chan string)
+
+	// This will block forever if no receiver exists
+	messageChan <- "ping"
+
+	msg := <-messageChan
+	fmt.Println(msg)
+	*/
 }
+--------------------------------------------
+Channel
+
+Used to communicate between goroutines safely
+
+🔹 Goroutine
+
+Lightweight thread managed by Go runtime
+
+🔹 select
+
+Waits on multiple channel operations and executes the first available one
+
+🔹 close(channel)
+
+Signals that no more values will be sent
+
+🔹 Buffered channel
+
+Allows sending without immediate receiver (up to capacity)
+
+
+🧠 Interview one-liner
+
+“Channels allow goroutines to communicate and synchronize by passing data, following the principle: don’t communicate by sharing memory, share memory by communicating.”
