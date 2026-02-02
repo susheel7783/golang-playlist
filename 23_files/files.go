@@ -1,131 +1,205 @@
 package main
 
+import (
+	"bufio" // Used for buffered reading & writing (efficient IO)
+	"fmt"   // Used for printing output
+	"os"    // Used for file & directory operations
+)
+
 func main() {
-	// f, err := os.Open("example.txt")
-	// if err != nil {
-	// 	// log the error
-	// 	panic(err)
-	// }
 
-	// fileInfo, err := f.Stat()
-	// if err != nil {
-	// 	// log the error
-	// 	panic(err)
-	// }
+	// ==================================================
+	// 1️⃣ OPEN A FILE AND READ FILE INFORMATION
+	// ==================================================
 
-	// fmt.Println("file name:", fileInfo.Name())
-	// fmt.Println("file or folder:", fileInfo.IsDir())
-	// fmt.Println("file size:", fileInfo.Size())
-	// fmt.Println("file permission:", fileInfo.Mode())
-	// fmt.Println("file modified at:", fileInfo.ModTime())
+	/*
+	// Open a file in read-only mode
+	f, err := os.Open("example.txt")
+	if err != nil {
+		// panic stops the program if error occurs
+		panic(err)
+	}
 
-	// read file
-	// f, err := os.Open("example.txt")
-	// if err != nil {
-	// 	panic(err)
-	// }
+	// Ensure file is closed when main() exits
+	defer f.Close()
 
-	// defer f.Close()
+	// Get file metadata (name, size, permissions, etc.)
+	fileInfo, err := f.Stat()
+	if err != nil {
+		panic(err)
+	}
 
-	// buf := make([]byte, 12)
-	// d, err := f.Read(buf)
-	// if err != nil {
-	// 	panic(err)
-	// }
+	// Print file information
+	fmt.Println("file name:", fileInfo.Name())       // Name of the file
+	fmt.Println("is directory:", fileInfo.IsDir())  // true if folder
+	fmt.Println("file size:", fileInfo.Size())       // Size in bytes
+	fmt.Println("permissions:", fileInfo.Mode())    // File permissions
+	fmt.Println("modified at:", fileInfo.ModTime()) // Last modified time
+	*/
 
-	// for i := 0; i < len(buf); i++ {
-	// 	println("data", d, string(buf[i]))
-	// }
+	// ==================================================
+	// 2️⃣ READ FILE USING Read() (LOW-LEVEL)
+	// ==================================================
 
-	// data, err := os.ReadFile("example.txt")
-	// if err != nil {
-	// 	panic(err)
-	// }
+	/*
+	// Open file
+	f, err := os.Open("example.txt")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
 
-	// fmt.Println(string(data))
+	// Create a byte slice (buffer) of size 12
+	buf := make([]byte, 12)
 
-	// read folders
+	// Read data into buffer
+	n, err := f.Read(buf)
+	if err != nil {
+		panic(err)
+	}
 
-	// dir, err := os.Open("../")
-	// if err != nil {
-	// 	panic(err)
-	// }
+	// n = number of bytes actually read
+	fmt.Println("bytes read:", n)
 
-	// defer dir.Close()
+	// Print each byte as character
+	for i := 0; i < n; i++ {
+		fmt.Println("data:", string(buf[i]))
+	}
+	*/
 
-	// fileInfo, err := dir.ReadDir(-1)
+	// ==================================================
+	// 3️⃣ READ FILE USING os.ReadFile (EASIEST WAY)
+	// ==================================================
 
-	// for _, fi := range fileInfo {
-	// 	fmt.Println(fi.Name(), fi.IsDir())
-	// }
+	/*
+	// Reads entire file into memory at once
+	data, err := os.ReadFile("example.txt")
+	if err != nil {
+		panic(err)
+	}
 
-	// create a file
-	// f, err := os.Create("example2.txt")
-	// if err != nil {
-	// 	panic(err)
-	// }
+	// Convert bytes to string and print
+	fmt.Println(string(data))
+	*/
 
-	// defer f.Close()
+	// ==================================================
+	// 4️⃣ READ DIRECTORY CONTENTS
+	// ==================================================
 
-	// f.WriteString("hi go")
-	// f.WriteString("nice language")
-	// bytes := []byte("Hello Golang")
-	// f.Write(bytes)
+	/*
+	// Open current directory (../ means parent directory)
+	dir, err := os.Open("../")
+	if err != nil {
+		panic(err)
+	}
+	defer dir.Close()
 
-	// read and write to another file (streaming fashion)
+	// Read all files and folders in directory
+	entries, err := dir.ReadDir(-1)
+	if err != nil {
+		panic(err)
+	}
 
-	// sourceFile, err := os.Open("example.txt")
-	// if err != nil {
-	// 	panic(err)
-	// }
+	// Loop through directory entries
+	for _, entry := range entries {
+		fmt.Println(entry.Name(), "is directory:", entry.IsDir())
+	}
+	*/
 
-	// defer sourceFile.Close()
+	// ==================================================
+	// 5️⃣ CREATE AND WRITE TO A FILE
+	// ==================================================
 
-	// destFile, err := os.Create("example2.txt")
-	// if err != nil {
-	// 	panic(err)
-	// }
+	/*
+	// Create a new file (overwrites if exists)
+	f, err := os.Create("example2.txt")
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
 
-	// defer destFile.Close()
+	// Write string data
+	f.WriteString("hi go\n")
+	f.WriteString("nice language\n")
 
-	// reader := bufio.NewReader(sourceFile)
-	// writer := bufio.NewWriter(destFile)
+	// Write byte slice
+	bytes := []byte("Hello Golang\n")
+	f.Write(bytes)
 
-	// for {
-	// 	b, err := reader.ReadByte()
-	// 	if err != nil {
-	// 		if err.Error() != "EOF" {
-	// 			panic(err)
-	// 		}
+	fmt.Println("file written successfully")
+	*/
 
-	// 		break
-	// 	}
+	// ==================================================
+	// 6️⃣ COPY FILE USING BUFFERED IO (BEST PRACTICE)
+	// ==================================================
 
-	// 	e := writer.WriteByte(b)
-	// 	if e != nil {
-	// 		panic(e)
-	// 	}
+	/*
+	// Open source file
+	sourceFile, err := os.Open("example.txt")
+	if err != nil {
+		panic(err)
+	}
+	defer sourceFile.Close()
 
-	// }
+	// Create destination file
+	destFile, err := os.Create("example2.txt")
+	if err != nil {
+		panic(err)
+	}
+	defer destFile.Close()
 
-	// writer.Flush()
+	// Create buffered reader & writer
+	reader := bufio.NewReader(sourceFile)
+	writer := bufio.NewWriter(destFile)
 
-	// fmt.Println("written to new file succesfully")
+	// Read and write byte by byte
+	for {
+		b, err := reader.ReadByte()
 
-	// delete a file
+		// If end of file reached, stop loop
+		if err != nil {
+			if err.Error() != "EOF" {
+				panic(err)
+			}
+			break
+		}
 
-	// sourceFile, err := os.Open("example2.txt")
-	// if err != nil {
-	// 	panic(err)
-	// }
+		// Write byte to destination
+		err = writer.WriteByte(b)
+		if err != nil {
+			panic(err)
+		}
+	}
 
-	// defer sourceFile.Close()
+	// Flush buffered data to disk
+	writer.Flush()
 
-	// err := os.Remove("example2.txt")
-	// if err != nil {
-	// 	panic(err)
-	// }
+	fmt.Println("file copied successfully")
+	*/
 
-	// fmt.Println(" file deleted successfully")
+	// ==================================================
+	// 7️⃣ DELETE A FILE
+	// ==================================================
 
+	/*
+	// Delete file permanently
+	err := os.Remove("example2.txt")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("file deleted successfully")
+	*/
 }
+-----------------------------------------------
+os.Open → open file
+
+defer file.Close() → avoid memory leaks
+
+os.ReadFile → easiest way to read file
+
+bufio → efficient for large files
+
+os.Create → create / overwrite file
+
+os.Remove → delete file
