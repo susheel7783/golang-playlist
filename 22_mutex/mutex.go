@@ -58,7 +58,7 @@ func main() {
 	// Safe final value (will always be 100)
 	fmt.Println(myPost.views)
 }
-'-------------------------------------
+---------------------------------------------
 Multiple goroutines are trying to update the same variable (views).
 
 Without protection:
