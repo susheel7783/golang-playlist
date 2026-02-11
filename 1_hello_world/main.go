@@ -1,4 +1,4 @@
-package main
+package main // marks the application's entry point; only this package can be compiled and run
 
 import "fmt"
 
