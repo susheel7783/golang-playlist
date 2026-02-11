@@ -1,4 +1,4 @@
-package main // marks the application's entry point; only this package can be compiled and run
+package main // marks the application's entry point; only this package can be compiled and run, and execution starts from func main()
 
 import "fmt"
 
